@@ -2,10 +2,10 @@
 # title: Titre du travail
 # repository: tpoisot/BIO245-modele
 # auteurs:
-#    - nom: Auteur
-#      prenom: Premier
-#      matricule: XXXXXXXX
-#      github: premierAuteur
+#    - nom: Bhandari
+#      prenom: Snehal
+#      matricule: 20279267
+#      github: snehal12b
 #    - nom: Auteur
 #      prenom: Deuxième
 #      matricule: XXXXXXXX
