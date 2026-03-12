@@ -1,5 +1,5 @@
 # ---
-# title: Titre du travail
+# title: Devoir 2
 # repository: tpoisot/BIO245-modele
 # auteurs:
 #    - nom: Bhandari
