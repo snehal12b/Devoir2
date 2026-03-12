@@ -20,6 +20,12 @@
 #absence complète de végétation peut diminuer la diversité biologique et ainsi favoriser l'érosion des sols.
 #Une solution serait de créer des corridors végétalisés principalement composés d'herbes et de buissons de petite taille.
 #Cela permet donc de maintenir une couverture végétale et d'éliminer les risques pour les infrastructures.
+#Ce travail utilise un modèle de transition végétale pour simuler la colonisation et la succession écologique dans un corridor divisé en plusieurs parcelles.
+#L'objectif est donc de déterminer une population initiale de plantes et une matrice de transition décrivant les probabilités de changement d'état des parcelles
+#qui permettrait d'atteindre un équilibre écologique souhaité. En effet, le mandat indique qu'à l'équilibre, 20% des parcelles doivent être végétalisées, dont 30%
+# d'herbes et 70% de buissons. Aussi, pour maintenir une diversité minimale, la variété de buisson la moins abondante doit représenter au moins 30% des parcelles 
+#occupées par des buissons. À l'aide de simulations stochastiques et déterministes, nous souhaitons évaluer si les paramètres choisis permettent de respecter ces
+#critères dans au moins 80% des simulations.
 # # Présentation du modèle
 
 # # Implémentation
