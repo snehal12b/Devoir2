@@ -14,6 +14,12 @@
 
 # # Introduction
 
+#La gestion de la végétation sous les lignes électriques à haute tension est considéré comme un défi important.
+#Il faut assurer la sécurité des infrastructures et préserver aussi la biodiversité. 
+#Une végétation trop dense ou composée d'arbre de grande taille peut interférer avec les lignes électriques, tandis qu'une
+#absence complète de végétation peut diminuer la diversité biologique et ainsi favoriser l'érosion des sols.
+#Une solution serait de créer des corridors végétalisés principalement composés d'herbes et de buissons de petite taille.
+#Cela permet donc de maintenir une couverture végétale et d'éliminer les risques pour les infrastructures.
 # # Présentation du modèle
 
 # # Implémentation
