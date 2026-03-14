@@ -38,6 +38,7 @@ using CairoMakie
 using Distributions
 # ## Code à modifier
 
+# Vérifie que la matrice de transition est valide
 function check_transition_matrix!(T)
     for ligne in axes(T, 1)
         if sum(T[ligne, :]) != 1
@@ -48,6 +49,7 @@ function check_transition_matrix!(T)
     return T
 end
 
+# Vérifie que les dimensions de la matrice et du vecteur états sont correctes
 function check_function_arguments(transitions, states)
     if size(transitions, 1) != size(transitions, 2)
         throw("La matrice de transition n'est pas carrée")
@@ -59,6 +61,7 @@ function check_function_arguments(transitions, states)
     return nothing
 end
 
+# Simulation stochastique
 function _sim_stochastic!(timeseries, transitions, generation)
     for state in axes(timeseries, 1)
         pop_change = rand(Multinomial(timeseries[state, generation], transitions[state, :]))
@@ -66,11 +69,13 @@ function _sim_stochastic!(timeseries, transitions, generation)
     end
 end
 
+# Simulation déterministe
 function _sim_determ!(timeseries, transitions, generation)
     pop_change = (timeseries[:, generation]' * transitions)'
     timeseries[:, generation+1] .= pop_change
 end
 
+# Fonction principale de la simulation
 function simulation(transitions, states; generations=500, stochastic=false)
 
     check_transition_matrix!(transitions)
@@ -89,21 +94,25 @@ function simulation(transitions, states; generations=500, stochastic=false)
     return timeseries
 end
 
+# ## États et population initiale
 # States
-# Barren, Grass, Shrubs
-s = [100, 0, 0]
+# Barren, Grass, Shrub1, Shrub2
+
+# Population initiale
+s = [150, 0, 25, 25] #200 parcelles et 50 plantées, pas d'herbes parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met les herbes on risque d'en avoir trop à l'équilibre
 states = length(s)
 patches = sum(s)
 
-# Transitions
+# Matrice de transitions
 T = zeros(Float64, states, states)
-T[1, :] = [110, 8, 0]
-T[2, :] = [2, 120, 3]
-T[3, :] = [1, 0, 94]
+T[1, :] = [150, 12, 6, 6] #Barren, sol nu dominant, mais colonisation possible
+T[2, :] = [25, 95, 10, 10] #Grass, herbes persistent, mais peuvent quand même devenir des buissons
+T[3, :] = [10, 8, 110, 12] #Shrub1, buisson 1 persiste
+T[4, :] = [10, 8, 12, 110] #Shrub2, buisson 2 persiste, mais il ne domine pas nécessairement le buisson 1, maintient de la diversité
 T
 
-states_names = ["Barren", "Grasses", "Shrubs"]
-states_colors = [:grey40, :orange, :teal]
+states_names = ["Barren", "Grasses", "Shrub1", "Shrub2"]
+states_colors = [:grey40, :orange, :teal, :purple]
 
 # Simulations
 
