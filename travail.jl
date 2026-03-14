@@ -28,6 +28,13 @@
 #critères dans au moins 80% des simulations.
 # # Présentation du modèle
 
+# Le corridor étudié est représenté comme un ensemble de 200 parcelles qui peuvent se trouver dans différents états de végétation. Quatre états sont considérés : Barren (sol nu), Grass (herbes), Shrub1 (buisson 1) et Shrub2 (buisson 2).
+# Les parcelles évoluent d'un état à l'autre au fil du temps selon une matrice de transition qui décrit les probabilités de colonisation, persistance ou de remplacement entre les différents types de végétation.
+# Le modèle est un modèle de transition markovien où l'état d'une parcelle à la génération suivante dépend juste de son état actuel et des probabilités associées dans la matrice de transition. 
+# Les transitions permettent la colonisation des parcelles nues par des herbes (Grass) ou des buissons (Shrub1 et 2), la persistance des végétaux, et les conversions entre les différents types de végétation.
+# Ainsi, pour simuler l'aménagement du corridor sous une ligne électique, une population initiale comportement principalement des parcelles nues est utilisée, avec une plantation maximale de 50 parcelles sous forme de buissons.
+# Les herbes ne sont pas plantées initialement, car elles devraient coloniser naturellement les parcelles libres. Donc, l'objectif du modèle est d'évaluer si, à long terme, le système atteint un équilibre respectant les critères qui sont :
+# 20% de parcelles végétalisées, dont 30% d'herbes et 70% de buissons, et garder une diversité minimale entre les deux espèces de buissons.
 # # Implémentation
 
 # ## Packages nécessaires
@@ -99,25 +106,63 @@ end
 # Barren, Grass, Shrub1, Shrub2
 
 # Population initiale
-s = [150, 0, 25, 25] #200 parcelles et 50 plantées, pas d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met les herbes on risque d'en avoir trop à l'équilibre
+s = [160, 12, 14, 14] #200 parcelles et 50 plantées, pas d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met les herbes on risque d'en avoir trop à l'équilibre
 states = length(s)
 patches = sum(s)
 
 # Matrice de transitions
 T = zeros(Float64, states, states)
-T[1, :] = [150, 12, 6, 6] #Barren, sol nu dominant, mais colonisation possible. Parcelle nue peut devenir herbe, buisson 1, buisson 2
-T[2, :] = [25, 95, 10, 10] #Grass, herbes persistent, mais peuvent quand même devenir des buissons
-T[3, :] = [10, 8, 110, 12] #Shrub1, buisson 1 persiste
-T[4, :] = [10, 8, 12, 110] #Shrub2, buisson 2 persiste, mais il ne domine pas nécessairement le buisson 1, maintient de la diversité
+T[1, :] = [95, 2, 1.5, 1.5] ## Barren (sol nu dominant, mais colonisation possible. Parcelle nue peut devenir herbe, buisson 1, buisson 2)
+T[2, :] = [30, 50, 10, 10] ## Grass (herbes persistent, mais peuvent quand même devenir des buissons)
+T[3, :] = [20, 5, 70, 5] ## Shrub1 (buisson 1 persiste)
+T[4, :] = [20, 5, 5, 70] ## Shrub2 (buisson 2 persiste, mais il ne domine pas nécessairement le buisson 1, maintient de la diversité)
 T
 
-states_names = ["Barren", "Grasses", "Shrub1", "Shrub2"]
+states_names = ["Barren", "Grass", "Shrub1", "Shrub2"]
 states_colors = [:grey40, :orange, :teal, :purple]
 
 # Vérification des critères
 
-# Simulations
+function verification_equilibre(resultat)
+    final = resultat[:, end]
+    Grass = final[2]
+    Shrub1 = final[3]
+    Shrub2 = final[4]
 
+    vegetation = Grass + Shrub1 + Shrub2
+    shrubs = Shrub1 + Shrub2
+
+    if vegetation == 0
+        return false
+    end
+# Critères
+    condition1 = abs(vegetation - 40) <= 10 ## Végétation totale environ 40
+    condition2 = abs(Grass / vegetation - 0.3) <= 0.15 ## 30% herbes (Grass)
+    condition3 = abs(shrubs / vegetation - 0.7) <= 0.15 ## 70% buissons (Shrub 1 et 2)
+    condition4 = min(Shrub1, Shrub2) >= 0.25 * shrubs ## Pour une diversité miniale
+    return condition1 && condition2 && condition3 && condition4
+end
+
+## #Simulations
+
+#Nombre de simulations à effectuer
+nombre_simulations = 100
+
+#Compteur des simulations qui respectent les critères
+nombre_reussites = 0
+
+for i in 1:nombre_simulations
+    resultat = simulation(T, s; stochastic=true, generations=200)
+    if verification_equilibre(resultat)
+        nombre_reussites += 1
+    end
+end
+
+# Calcul du pourcentage de réussite
+pourcentage = (nombre_reussites / nombre_simulations) * 100
+println("Pourcentage de réussite: ", pourcentage, "%")
+
+## # Graphique
 f = Figure()
 ax = Axis(f[1, 1], xlabel="Nb. générations", ylabel="Nb. parcelles")
 
