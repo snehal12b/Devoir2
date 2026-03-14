@@ -6,10 +6,10 @@
 #      prenom: Snehal
 #      matricule: 20279267
 #      github: snehal12b
-#    - nom: Auteur
-#      prenom: Deuxième
-#      matricule: XXXXXXXX
-#      github: DeuxiAut
+#    - nom: Hammel Monzon
+#      prenom: Valentina
+#      matricule: 20274033
+#      github: valentina9000
 # ---
 
 # # Introduction
