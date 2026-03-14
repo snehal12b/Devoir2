@@ -99,13 +99,13 @@ end
 # Barren, Grass, Shrub1, Shrub2
 
 # Population initiale
-s = [150, 0, 25, 25] #200 parcelles et 50 plantées, pas d'herbes parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met les herbes on risque d'en avoir trop à l'équilibre
+s = [150, 0, 25, 25] #200 parcelles et 50 plantées, pas d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met les herbes on risque d'en avoir trop à l'équilibre
 states = length(s)
 patches = sum(s)
 
 # Matrice de transitions
 T = zeros(Float64, states, states)
-T[1, :] = [150, 12, 6, 6] #Barren, sol nu dominant, mais colonisation possible
+T[1, :] = [150, 12, 6, 6] #Barren, sol nu dominant, mais colonisation possible. Parcelle nue peut devenir herbe, buisson 1, buisson 2
 T[2, :] = [25, 95, 10, 10] #Grass, herbes persistent, mais peuvent quand même devenir des buissons
 T[3, :] = [10, 8, 110, 12] #Shrub1, buisson 1 persiste
 T[4, :] = [10, 8, 12, 110] #Shrub2, buisson 2 persiste, mais il ne domine pas nécessairement le buisson 1, maintient de la diversité
