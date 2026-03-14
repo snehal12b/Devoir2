@@ -114,6 +114,8 @@ T
 states_names = ["Barren", "Grasses", "Shrub1", "Shrub2"]
 states_colors = [:grey40, :orange, :teal, :purple]
 
+# Vérification des critères
+
 # Simulations
 
 f = Figure()
