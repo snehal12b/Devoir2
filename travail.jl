@@ -135,11 +135,34 @@ function verification_equilibre(resultat)
     if vegetation == 0
         return false
     end
-# Critères
-    condition1 = abs(vegetation - 40) <= 10 ## Végétation totale environ 40
-    condition2 = abs(Grass / vegetation - 0.3) <= 0.15 ## 30% herbes (Grass)
-    condition3 = abs(shrubs / vegetation - 0.7) <= 0.15 ## 70% buissons (Shrub 1 et 2)
-    condition4 = min(Shrub1, Shrub2) >= 0.25 * shrubs ## Pour une diversité miniale
+## Critères
+# Cond1: Nombre total de parcelles végétalisées
+# Végétation totale environ 40 parcelles (20% de 200).
+# Marge de plus ou moins 8 parcelles pour tenir compte de la variabilité stochastique.
+# Cette plage reste centrée sur l'objectif de 20% et permet d'évaluer un équilibre réaliste.
+
+    condition1 = abs(vegetation - 40) <= 8 
+
+# Cond2: Proportion d'herbes (Grass) parmi la végétation.
+# Vise 30% d'herbes (30% du 20% de 200).
+# Marge de plus ou moins 0.15 pour réfléter les fluctuations stochastiques entre les simulations.
+# La proportion d'herbes reste proche de la proportion cible sans exiger une valeur exacte à chaque simulation.
+
+    condition2 = abs(Grass / vegetation - 0.3) <= 0.15
+
+#Proportion des buissons (Shrub1 et 2) parmi la végétation.
+# Vise 70% de buissons (70% du 20% de 200).
+# Marge de 0.15, même logique que pour les herbes
+# Proportion de buissons domine la végétation.
+
+    condition3 = abs(shrubs / vegetation - 0.7) <= 0.15
+
+# Diversité minimale entre les deux types de buissons
+# Le buisson le moins abondant doit représenter au moins 30% du total des buissons.
+# Ne peut pas tolérer de marges, on applique exactement le seuil demandé.
+
+    condition4 = min(Shrub1, Shrub2) >= 0.30 * shrubs
+
     return condition1 && condition2 && condition3 && condition4
 end
 
@@ -158,7 +181,7 @@ for i in 1:nombre_simulations
     end
 end
 
-# Calcul du pourcentage de réussite
+# Calcul du pourcentage de réussite (Vise au moins 80%)
 pourcentage = (nombre_reussites / nombre_simulations) * 100
 println("Pourcentage de réussite: ", pourcentage, "%")
 
