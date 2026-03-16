@@ -168,7 +168,7 @@ function verification_equilibre(resultat)
     return condition1 && condition2 && condition3 && condition4
 end
 
-# ## Simulations
+# ## Simulationss
 
 # Nombre de simulations à effectuer
 nombre_simulations = 100
@@ -218,7 +218,6 @@ hist(randn(100))
 
 # # Discussion
 
-#Ll
 
 # On peut aussi citer des références dans le document `references.bib`,
 # @ermentrout1993cellular -- la bibliographie sera ajoutée automatiquement à la
