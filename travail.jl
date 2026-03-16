@@ -1,4 +1,4 @@
-# ---
+
 # title: Devoir 2
 # repository: tpoisot/BIO245-modele
 # auteurs:
@@ -10,7 +10,6 @@
 #      prenom: Valentina
 #      matricule: 20274033
 #      github: valentina9000
-# ---
 
 # # Introduction
 
@@ -68,7 +67,7 @@ using Distributions
 
 import Random
 Random.seed!(123456)
-# ## Code à modifier
+# # Code pour le modèle
 
 ## Vérifie que chaque ligne de la matrice de transition est valide.
 ## Si une ligne n'est pas valide, elle est normalisée pour que la somme soit égale à 1. Un avertissement est alors affiché pour indiquer que la ligne a été modifiée.
@@ -97,7 +96,7 @@ function check_function_arguments(transitions, states)
     return nothing
 end
 
-# Simulation stochastique
+# Fonction simulation stochastique
 
 function _sim_stochastic!(timeseries, transitions, generation)
     for state in axes(timeseries, 1)
@@ -106,7 +105,7 @@ function _sim_stochastic!(timeseries, transitions, generation)
     end
 end
 
-# Simulation déterministe
+# Fonction simulation déterministe
 
 function _sim_determ!(timeseries, transitions, generation)
     pop_change = (timeseries[:, generation]' * transitions)'
@@ -164,7 +163,7 @@ function verification_equilibre(resultat)
     vegetation = Grass + Shrub1 + Shrub2 # Total de parcelles végétalisées à l'équilibre
     shrubs = Shrub1 + Shrub2 # Total de parcelles de buissons.
 
-    if vegetation == 0 #Vérification du cas où il n'y a aucune parcelle végétalisée.
+    if vegetation == 0 # Vérification du cas où il n'y a aucune parcelle végétalisée.
         return false
     end
 
@@ -173,7 +172,7 @@ function verification_equilibre(resultat)
     condition3 = abs(shrubs / vegetation - 0.7) <= 0.15
     condition4 = min(Shrub1, Shrub2) >= 0.30 * shrubs
 
-    return condition1 && condition2 && condition3 && condition4
+    return condition1 && condition2 && condition3 && condition4 # On utilise &&, car && n'évalue pas les conditions suivantes si une condition est fausse, ce qui est plus efficace que & qui évalue toutes les conditions même si une est fausse.
 end
 
 ## Cond1: Nombre total de parcelles végétalisées
@@ -195,7 +194,7 @@ end
 ## Le buisson le moins abondant doit représenter au moins 30% du total des buissons.
 ## Ne peut pas tolérer de marges, on applique exactement le seuil demandé pour garantir la diversité.
    
-# ## Simulations
+# ## Simulations réussies
 
 # Nombre de simulations à effectuer
 nombre_simulations = 100
@@ -206,7 +205,7 @@ nombre_reussites = 0 # Valeur initial de 0, elle augmentera à chaque fois qu'un
 for i in 1:nombre_simulations
     resultat = simulation(T, s; stochastic=true, generations=200)
     if verification_equilibre(resultat)
-        global nombre_reussites += 1 # Si la simulation respecte les critères, on ajoute au compteur de réussites. global est utilisé pour indiquer que nous faisons référence à la variable nombre_reussites définie avant la boucle.
+        global nombre_reussites += 1 # Si la simulation respecte les critères, on ajoute un au compteur de réussites. global est utilisé pour indiquer que nous faisons référence à la variable nombre_reussites définie avant la boucle.
     end
 end
 
@@ -214,7 +213,7 @@ end
 pourcentage = (nombre_reussites / nombre_simulations) * 100
 println("Pourcentage de réussite: ", pourcentage, "%")
 
-# ## Visualisation
+# ## Simulations et Visualisation
 
 f = Figure()
 ax = Axis(f[1, 1], xlabel="Nb. générations", ylabel="Nb. parcelles")
@@ -242,12 +241,12 @@ current_figure()
 
 # Les résultats de la simulation montrent l'évolution du nombre de parcelles dans chacun des quatres états de végétation (Barren, Grass, Scrhub 1 et Schrub 2)   
 # au cours de 200 générations. Les lignes pâles représentent les simulations stochastiques, et les lignes épaisses représentent la simulation déterministe. Un modèle déterministe 
-# impose une règle fixe reliant entrées et sorties de façon prévisible. Les résultats seront toujours les même pour un état intial donné. Au contraire, un  modèle stochastique 
+# impose une règle fixe reliant entrées et sorties de façon prévisible. Les résultats seront toujours les mêmes pour un état intial donné. Au contraire, un  modèle stochastique 
 # introduit des éléments aléatoires dans le système, ce qui permet, en programmation de simulations, de représenter des variations d’un phénomène de manière plus naturelle 
-#en produisant différents résultats à chaque exécution, avec les mêmes paramètres de départ (Husson, 2001).
+# en produisant différents résultats à chaque exécution, avec les mêmes paramètres de départ (husson2001modele).
 # Au début de la simulation, la majorité des parcelles sont barren (environ 160 parcelles), alors que les parcelles végétalisées représentent environ 40 parcelles. 
 # Au cours du temps, le nombre de parcelles dans chaque état évolue progressivement vers un équilibre stable. Les résultats montrent que les parcelles 
-# Barren restent dominantes , tandis que les autres états occupent une proportion plus faible, mais constante. Les simulations stochastiques varient mais la tendence 
+# Barren restent dominantes, tandis que les autres états occupent une proportion plus faible, mais constante. Les simulations stochastiques varient mais la tendence 
 # générale reste similaire entre les simulations. La plupart convergent vers des valeurs proche de celles de la  simulation déterministe.
 # Avec un taux de réussite de 80% dans les simulations stochastiques, cela indique que le modèle atteint les objectifs définis par le mandat dans la majorité des cas. 
 # Ceci suggère que les paramètres choisis sont appropriés pour atteindre l'équilibre souhaité.
@@ -256,23 +255,19 @@ current_figure()
 # # Discussion
 
 # Les résultats des simulations montrent que le système converge vers un équilibre stable après une phase initiale de transition et après plusieurs générations. La majorités des parcelles restent Barren, tandis
-# que le reste du corridor est occupé par de la végétation. A l'équilibre, le nombre de parcelles végétalisées est autour de 40 parcelles, ce qui correspsond à environ 20 % des 200 parcelles.
-# Cela indique que la matrice de transition choisie permet globalement de maintenir la proporiton de végétation souhaitée. La répartition des herbes et buisssons demeure relativement stable
-# au cours des simulations. Les herbes colonisent activement certaines parcelles nues, tandis que les buissons ont une proabilité de persistance plus élevée.
+# que le reste du corridor est occupé par de la végétation. À l'équilibre, le nombre de parcelles végétalisées est autour de 40 parcelles, ce qui correspond à environ 20 % des 200 parcelles.
+# Cela indique que la matrice de transition choisie permet globalement de maintenir la proportion de végétation souhaitée. La répartition des herbes et buisssons demeure relativement stable
+# au cours des simulations. Les herbes colonisent activement certaines parcelles nues, tandis que les buissons ont une probabilité de persistance plus élevée.
 # De plus, les deux types de buissons restent présents dans des proportions relativement similaires dans la plupart des simulations, ce qui permet de maintenir la diversité minimale requise.
-# La différence entre les modèles determinste et stochastique est importante pour interpréter les résultats. Le modèle deterministe montre la tendance moyenne de l'évolution de la végétation. Cela
+# La différence entre les modèles déterministes et stochastiques est importante pour interpréter les résultats. Le modèle déterministe montre la tendance moyenne de l'évolution de la végétation. Cela
 # sert comme référence pour comprendre la dynamique générale. Le modèle stochastique prend en compte la variabilité des processus de colonisation des parcelles ainsi que la persistance des buissons. 
-# C'est pour cela que certains simulation peuvent montrer des dominances temporaire d'herbe ou un déséquilibre entre les deux espèces de buissons. Ces varations permetent de représenter la réalité 
-# écologique car la colonisation et sucession sont influencée par des facteurs aléatoires. 
+# C'est pour cela que certaines simulations peuvent montrer des dominances temporaires d'herbes ou un déséquilibre entre les deux espèces de buissons. Ces varations permetent de représenter la réalité 
+# écologique, car la colonisation et succession sont influencées par des facteurs aléatoires. 
 # Cependant, la nature stochastique du modèle engendre une variabilité entre les simulations. Bien que le taux de réussite soit de 80%, certains scénarios ne respectent pas exactement les critères du mandat.
 # Ces échecs ont lieu principalement lorsque qu'il y a une dominance d'herbes (Grass) ou un manque d'équilibre entre les deux types de buissons (Shrub1 et Shrub2).
 # Par exemple, dans certaines simulations, les herbes peuvent coloniser plus rapidement que les buissons, ce qui peut entraîner une proportion d'herbes plus élevée que les 30% souhaités.
 # Les résultats, montrent la sensibilité du système. En effet, même si la matrice de transition est conçue pour favoriser un équilibre respectant les critères du mandat, la variabilité naturelle du système
 # peut mener à des résultats différents d'une simulation à l'autre.
-# Ce modèle permet donc de combiner la prédicitibilité (determinisme) et réalisme écologique (stochastique) dans la modélisation de la végétation sous lignes à haute tension.
+# Ce modèle permet donc de combiner la prédicitibilité (déterminisme) et réalisme écologique (stochastique) dans la modélisation de la végétation sous lignes à haute tension.
 
- 
-
-# On peut aussi citer des références dans le document `references.bib`,
-# @ermentrout1993cellular -- la bibliographie sera ajoutée automatiquement à la
-# fin du document.
+ # # Bibliographie
