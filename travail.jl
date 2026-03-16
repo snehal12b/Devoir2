@@ -208,17 +208,7 @@ end
 axislegend(ax)
 tightlimits!(ax)
 current_figure()
-# ## Une autre section
 
-"""
-    foo(x, y)
-
-Cette fonction ne fait rien.
-"""
-function foo(x, y)
-    ## Cette ligne est un commentaire
-    return nothing
-end
 
 # # Présentation des résultats
 
