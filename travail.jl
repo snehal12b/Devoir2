@@ -270,4 +270,4 @@ current_figure()
 # peut mener à des résultats différents d'une simulation à l'autre.
 # Ce modèle permet donc de combiner la prédicitibilité (déterminisme) et réalisme écologique (stochastique) dans la modélisation de la végétation sous lignes à haute tension.
 
- # # Bibliographie
+ # # Références
