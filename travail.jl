@@ -26,6 +26,7 @@
 # d'herbes et 70% de buissons. Aussi, pour maintenir une diversité minimale, la variété de buisson la moins abondante doit représenter au moins 30% des parcelles 
 # occupées par des buissons. À l'aide de simulations stochastiques et déterministes, nous souhaitons évaluer si les paramètres choisis permettent de respecter ces
 # critères dans au moins 80% des simulations.
+
 # # Présentation du modèle
 
 # Le corridor étudié est représenté comme un ensemble de 200 parcelles qui peuvent se trouver dans différents états de végétation. Quatre états sont considérés : Barren (sol nu), Grass (herbes), Shrub1 (buisson 1) et Shrub2 (buisson 2).
@@ -35,7 +36,9 @@
 # Ainsi, pour simuler l'aménagement du corridor sous une ligne électique, une population initiale comportement principalement des parcelles nues est utilisée, avec une plantation maximale de 50 parcelles sous forme de buissons.
 # Les herbes ne sont pas plantées initialement, car elles devraient coloniser naturellement les parcelles libres. Donc, l'objectif du modèle est d'évaluer si, à long terme, le système atteint un équilibre respectant les critères qui sont :
 # 20% de parcelles végétalisées, dont 30% d'herbes et 70% de buissons, et garder une diversité minimale entre les deux espèces de buissons.
+
 # # Implémentation
+
 # Le modèle à été créer dans le langage Julia afin de simuler l'évolution de la végétation dans un corridor composé de 200 parcelles. Les états que peuvent prendre 
 # les parcelles sont les suivant Barren (sol nu), Grass (herbes), Shrub1 (buisson 1) et Shrub2 (buisson 2). 
 # Une matrice de transition a été créer poour décrire les probabilités de changement d'états d'une génération à l'autre. Une fonction d'abord vérifie que la matrice 
@@ -65,6 +68,7 @@ using Distributions
 # ## Code à modifier
 
 ## Vérifie que la matrice de transition est valide
+
 function check_transition_matrix!(T)
     for ligne in axes(T, 1)
         if sum(T[ligne, :]) != 1
@@ -76,6 +80,7 @@ function check_transition_matrix!(T)
 end
 
 ## Vérifie que les dimensions de la matrice et du vecteur états sont correctes
+
 function check_function_arguments(transitions, states)
     if size(transitions, 1) != size(transitions, 2)
         throw("La matrice de transition n'est pas carrée")
@@ -125,16 +130,16 @@ end
 # Barren, Grass, Shrub1, Shrub2
 
 # Population initiale
-s = [160, 12, 14, 14] ## 200 parcelles et 50 plantées, peu d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met plus d'herbes on risque d'en avoir trop à l'équilibre.
+s = [160, 12, 14, 14] # 200 parcelles et 50 plantées, peu d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met plus d'herbes on risque d'en avoir trop à l'équilibre.
 states = length(s)
 patches = sum(s)
 
 # Matrice de transitions
 T = zeros(Float64, states, states)
-T[1, :] = [95, 2, 1.5, 1.5] ## Barren (sol nu dominant, mais colonisation possible. Parcelle nue peut devenir herbe, buisson 1, buisson 2)
-T[2, :] = [30, 50, 10, 10] ## Grass (herbes persistent, mais peuvent quand même devenir des buissons)
-T[3, :] = [20, 5, 70, 5] ## Shrub1 (buisson 1 persiste)
-T[4, :] = [20, 5, 5, 70] ## Shrub2 (buisson 2 persiste, mais il ne domine pas nécessairement le buisson 1, maintient de la diversité)
+T[1, :] = [95, 2, 1.5, 1.5] # Barren (sol nu dominant, mais colonisation possible. Parcelle nue peut devenir herbe, buisson 1, buisson 2)
+T[2, :] = [30, 50, 10, 10] # Grass (herbes persistent, mais peuvent quand même devenir des buissons)
+T[3, :] = [20, 5, 70, 5] # Shrub1 (buisson 1 persiste)
+T[4, :] = [20, 5, 5, 70] # Shrub2 (buisson 2 persiste, mais il ne domine pas nécessairement le buisson 1, maintient de la diversité)
 T
 
 states_names = ["Barren", "Grass", "Shrub1", "Shrub2"]
@@ -154,38 +159,35 @@ function verification_equilibre(resultat)
     if vegetation == 0
         return false
     end
-# Critères
+
+    condition1 = abs(vegetation - 40) <= 8 
+    condition2 = abs(Grass / vegetation - 0.3) <= 0.15
+    condition3 = abs(shrubs / vegetation - 0.7) <= 0.15
+    condition4 = min(Shrub1, Shrub2) >= 0.30 * shrubs
+
+    return condition1 && condition2 && condition3 && condition4
+end
+
 ## Cond1: Nombre total de parcelles végétalisées
 ## Végétation totale environ 40 parcelles (20% de 200).
 ## Marge de plus ou moins 8 parcelles pour tenir compte de la variabilité stochastique.
 ## Cette plage reste centrée sur l'objectif de 20% et permet d'évaluer un équilibre réaliste.
-
-    condition1 = abs(vegetation - 40) <= 8 
 
 ## Cond2: Proportion d'herbes (Grass) parmi la végétation.
 ## Vise 30% d'herbes (30% du 20% de 200).
 ## Marge de plus ou moins 0.15 pour réfléter les fluctuations stochastiques entre les simulations.
 ## La proportion d'herbes reste proche de la proportion cible sans exiger une valeur exacte à chaque simulation.
 
-    condition2 = abs(Grass / vegetation - 0.3) <= 0.15
-
 ## Cond3: Proportion des buissons (Shrub1 et 2) parmi la végétation.
 ## Vise 70% de buissons (70% du 20% de 200).
 ## Marge de 0.15, même logique que pour les herbes
 ## Proportion de buissons domine la végétation.
 
-    condition3 = abs(shrubs / vegetation - 0.7) <= 0.15
-
 ## Cond4: Diversité minimale entre les deux types de buissons
 ## Le buisson le moins abondant doit représenter au moins 30% du total des buissons.
 ## Ne peut pas tolérer de marges, on applique exactement le seuil demandé.
-
-    condition4 = min(Shrub1, Shrub2) >= 0.30 * shrubs
-
-    return condition1 && condition2 && condition3 && condition4
-end
-
-# ## Simulationss
+   
+# ## Simulations
 
 # Nombre de simulations à effectuer
 nombre_simulations = 100
