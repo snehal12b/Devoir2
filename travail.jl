@@ -29,6 +29,23 @@
 # # Présentation du modèle
 
 # # Implémentation
+# Le modèle à été créer dans le langage Julia afin de simuler l'évolution de la végétation dans un corridor composé de 200 parcelles. Les états que peuvent prendre 
+# les parcelles sont les suivant Barren (sol nu), Grass (herbes), Shrub1 (buisson 1) et Shrub2 (buisson 2). 
+# Une matrice de transition a été créer poour décrire les probabilités de changement d'états d'une génération à l'autre. Une fonction d'abord vérifie que la matrice 
+# de transition est valide en s'assurant que la somme des probabilités de chaque ligne est égale à 1. Sinon, les valeurs sont normalisées. 
+# La populaiton initiale est définie par un vecteur contenant le nombre de parcelle dans chaque état. Elle est composée de 160 parcelles nues, 12 parcelles d'herbes, 
+# et 14 parcelles pour chacun des deux types de buissons. La quantité d'herbe est volontairement faible pour éviter d'avoir un domiance trop importante d'herbe puisqu'on
+# souhaite obtenir 70% de buissons dans la végétation.
+# Il y a deux types de simulations, la simulation détéerminsite et la simulation stochastique. La simulation déterministe répresente la tendance moyenne du système 
+# alors que la simulation stochastique permet de représenter la variabilité naturelle du système
+# Les simulations sont réalisées sur 200 générations. Pour vérifier si les conditions du mandat sont respectées, la simulation stochastique a été répétée 100 fois.
+# Après chaque simulation, une fonction vérifie si quatre conditions sont respectées. La première est que le nombre total de parcelle végétalisées doit être environ 
+# 40 parcelles avec une tolérance de  + ou - 8 parcelles. La deuxième est que les herbes doivent représenter environ 30 % de la population. La quatrièreme est que 
+# les buissons doivent représenter environ 70% de la végétation. La quatrième est que le type de buisson le moins abondant doit représenter au moins 30% des parcelles
+# occupées par des buissons. Si les quatres conditions sont respectées alors la simulaiton est réussite. 
+# Le pourcentage de simulations qui respecte ces conditions est ensuite calculé pour voir si le modèle atteint l'objectif de 80 % de réussite.
+# Finalement, un graphique est créer afin de visualiser l'évolution du nombre de parcelles au cours du temps. Les lignes pales representent les simulation stochastique
+# et les lignes épaisses représentent la simulation déterministe. 
 
 # ## Packages nécessaires
 
