@@ -241,10 +241,13 @@ current_figure()
 # # Présentation des résultats
 
 # Les résultats de la simulation montrent l'évolution du nombre de parcelles dans chacun des quatres états de végétation (Barren, Grass, Scrhub 1 et Schrub 2)   
-# au cours de 200 générations. Les lignes pâles représentent les simulations stochastiques, et les lignes épaisses représentent la simulation déterministe.
+# au cours de 200 générations. Les lignes pâles représentent les simulations stochastiques, et les lignes épaisses représentent la simulation déterministe. Un modèle déterministe 
+# impose une règle fixe reliant entrées et sorties de façon prévisible. Les résultats seront toujours les même pour un état intial donné. Au contraire, un  modèle stochastique 
+# introduit des éléments aléatoires dans le système, ce qui permet, en programmation de simulations, de représenter des variations d’un phénomène de manière plus naturelle 
+#en produisant différents résultats à chaque exécution, avec les mêmes paramètres de départ (Husson, 2001).
 # Au début de la simulation, la majorité des parcelles sont barren (environ 160 parcelles), alors que les parcelles végétalisées représentent environ 40 parcelles. 
-# Au cours du temps, le nombre de parcelles dans chaque état évolue progressivement vers un équilibre relativement stable. Les résultats montrent que les parcelles 
-# Barren restent dominantes , tandis que les autres états occupent une proportion plus faible, mais constante. # Les simulations stochastiques varient mais la tendence 
+# Au cours du temps, le nombre de parcelles dans chaque état évolue progressivement vers un équilibre stable. Les résultats montrent que les parcelles 
+# Barren restent dominantes , tandis que les autres états occupent une proportion plus faible, mais constante. Les simulations stochastiques varient mais la tendence 
 # générale reste similaire entre les simulations. La plupart convergent vers des valeurs proche de celles de la  simulation déterministe.
 # Avec un taux de réussite de 80% dans les simulations stochastiques, cela indique que le modèle atteint les objectifs définis par le mandat dans la majorité des cas. 
 # Ceci suggère que les paramètres choisis sont appropriés pour atteindre l'équilibre souhaité.
@@ -257,11 +260,16 @@ current_figure()
 # Cela indique que la matrice de transition choisie permet globalement de maintenir la proporiton de végétation souhaitée. La répartition des herbes et buisssons demeure relativement stable
 # au cours des simulations. Les herbes colonisent activement certaines parcelles nues, tandis que les buissons ont une proabilité de persistance plus élevée.
 # De plus, les deux types de buissons restent présents dans des proportions relativement similaires dans la plupart des simulations, ce qui permet de maintenir la diversité minimale requise.
+# La différence entre les modèles determinste et stochastique est importante pour interpréter les résultats. Le modèle deterministe montre la tendance moyenne de l'évolution de la végétation. Cela
+# sert comme référence pour comprendre la dynamique générale. Le modèle stochastique prend en compte la variabilité des processus de colonisation des parcelles ainsi que la persistance des buissons. 
+# C'est pour cela que certains simulation peuvent montrer des dominances temporaire d'herbe ou un déséquilibre entre les deux espèces de buissons. Ces varations permetent de représenter la réalité 
+# écologique car la colonisation et sucession sont influencée par des facteurs aléatoires. 
 # Cependant, la nature stochastique du modèle engendre une variabilité entre les simulations. Bien que le taux de réussite soit de 80%, certains scénarios ne respectent pas exactement les critères du mandat.
 # Ces échecs ont lieu principalement lorsque qu'il y a une dominance d'herbes (Grass) ou un manque d'équilibre entre les deux types de buissons (Shrub1 et Shrub2).
 # Par exemple, dans certaines simulations, les herbes peuvent coloniser plus rapidement que les buissons, ce qui peut entraîner une proportion d'herbes plus élevée que les 30% souhaités.
 # Les résultats, montrent la sensibilité du système. En effet, même si la matrice de transition est conçue pour favoriser un équilibre respectant les critères du mandat, la variabilité naturelle du système
 # peut mener à des résultats différents d'une simulation à l'autre.
+# Ce modèle permet donc de combiner la prédicitibilité (determinisme) et réalisme écologique (stochastique) dans la modélisation de la végétation sous lignes à haute tension.
 
  
 
