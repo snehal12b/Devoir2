@@ -14,18 +14,18 @@
 
 # # Introduction
 
-#La gestion de la végétation sous les lignes électriques à haute tension est considéré comme un défi important.
-#Il faut assurer la sécurité des infrastructures et préserver aussi la biodiversité. 
-#Une végétation trop dense ou composée d'arbre de grande taille peut interférer avec les lignes électriques, tandis qu'une
-#absence complète de végétation peut diminuer la diversité biologique et ainsi favoriser l'érosion des sols.
-#Une solution serait de créer des corridors végétalisés principalement composés d'herbes et de buissons de petite taille.
-#Cela permet donc de maintenir une couverture végétale et d'éliminer les risques pour les infrastructures.
-#Ce travail utilise un modèle de transition végétale pour simuler la colonisation et la succession écologique dans un corridor divisé en plusieurs parcelles.
-#L'objectif est donc de déterminer une population initiale de plantes et une matrice de transition décrivant les probabilités de changement d'état des parcelles
-#qui permettrait d'atteindre un équilibre écologique souhaité. En effet, le mandat indique qu'à l'équilibre, 20% des parcelles doivent être végétalisées, dont 30%
+# La gestion de la végétation sous les lignes électriques à haute tension est considéré comme un défi important.
+# Il faut assurer la sécurité des infrastructures et préserver aussi la biodiversité. 
+# Une végétation trop dense ou composée d'arbre de grande taille peut interférer avec les lignes électriques, tandis qu'une
+# absence complète de végétation peut diminuer la diversité biologique et ainsi favoriser l'érosion des sols.
+# Une solution serait de créer des corridors végétalisés principalement composés d'herbes et de buissons de petite taille.
+# Cela permet donc de maintenir une couverture végétale et d'éliminer les risques pour les infrastructures.
+# Ce travail utilise un modèle de transition végétale pour simuler la colonisation et la succession écologique dans un corridor divisé en plusieurs parcelles.
+# L'objectif est donc de déterminer une population initiale de plantes et une matrice de transition décrivant les probabilités de changement d'état des parcelles
+# qui permettrait d'atteindre un équilibre écologique souhaité. En effet, le mandat indique qu'à l'équilibre, 20% des parcelles doivent être végétalisées, dont 30%
 # d'herbes et 70% de buissons. Aussi, pour maintenir une diversité minimale, la variété de buisson la moins abondante doit représenter au moins 30% des parcelles 
-#occupées par des buissons. À l'aide de simulations stochastiques et déterministes, nous souhaitons évaluer si les paramètres choisis permettent de respecter ces
-#critères dans au moins 80% des simulations.
+# occupées par des buissons. À l'aide de simulations stochastiques et déterministes, nous souhaitons évaluer si les paramètres choisis permettent de respecter ces
+# critères dans au moins 80% des simulations.
 # # Présentation du modèle
 
 # Le corridor étudié est représenté comme un ensemble de 200 parcelles qui peuvent se trouver dans différents états de végétation. Quatre états sont considérés : Barren (sol nu), Grass (herbes), Shrub1 (buisson 1) et Shrub2 (buisson 2).
@@ -41,11 +41,13 @@
 
 import Random
 Random.seed!(123456)
+import Pkg
+Pkg.add("Distributions")
 using CairoMakie
 using Distributions
 # ## Code à modifier
 
-# Vérifie que la matrice de transition est valide
+## Vérifie que la matrice de transition est valide
 function check_transition_matrix!(T)
     for ligne in axes(T, 1)
         if sum(T[ligne, :]) != 1
@@ -56,7 +58,7 @@ function check_transition_matrix!(T)
     return T
 end
 
-# Vérifie que les dimensions de la matrice et du vecteur états sont correctes
+## Vérifie que les dimensions de la matrice et du vecteur états sont correctes
 function check_function_arguments(transitions, states)
     if size(transitions, 1) != size(transitions, 2)
         throw("La matrice de transition n'est pas carrée")
@@ -106,7 +108,7 @@ end
 # Barren, Grass, Shrub1, Shrub2
 
 # Population initiale
-s = [160, 12, 14, 14] #200 parcelles et 50 plantées, pas d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met les herbes on risque d'en avoir trop à l'équilibre
+s = [160, 12, 14, 14] ## 200 parcelles et 50 plantées, pas d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met les herbes on risque d'en avoir trop à l'équilibre
 states = length(s)
 patches = sum(s)
 
@@ -121,7 +123,7 @@ T
 states_names = ["Barren", "Grass", "Shrub1", "Shrub2"]
 states_colors = [:grey40, :orange, :teal, :purple]
 
-# Vérification des critères
+# ## Vérification des critères
 
 function verification_equilibre(resultat)
     final = resultat[:, end]
@@ -135,43 +137,43 @@ function verification_equilibre(resultat)
     if vegetation == 0
         return false
     end
-## Critères
-# Cond1: Nombre total de parcelles végétalisées
-# Végétation totale environ 40 parcelles (20% de 200).
-# Marge de plus ou moins 8 parcelles pour tenir compte de la variabilité stochastique.
-# Cette plage reste centrée sur l'objectif de 20% et permet d'évaluer un équilibre réaliste.
+# Critères
+## Cond1: Nombre total de parcelles végétalisées
+## Végétation totale environ 40 parcelles (20% de 200).
+## Marge de plus ou moins 8 parcelles pour tenir compte de la variabilité stochastique.
+## Cette plage reste centrée sur l'objectif de 20% et permet d'évaluer un équilibre réaliste.
 
     condition1 = abs(vegetation - 40) <= 8 
 
-# Cond2: Proportion d'herbes (Grass) parmi la végétation.
-# Vise 30% d'herbes (30% du 20% de 200).
-# Marge de plus ou moins 0.15 pour réfléter les fluctuations stochastiques entre les simulations.
-# La proportion d'herbes reste proche de la proportion cible sans exiger une valeur exacte à chaque simulation.
+## Cond2: Proportion d'herbes (Grass) parmi la végétation.
+## Vise 30% d'herbes (30% du 20% de 200).
+## Marge de plus ou moins 0.15 pour réfléter les fluctuations stochastiques entre les simulations.
+## La proportion d'herbes reste proche de la proportion cible sans exiger une valeur exacte à chaque simulation.
 
     condition2 = abs(Grass / vegetation - 0.3) <= 0.15
 
-#Proportion des buissons (Shrub1 et 2) parmi la végétation.
-# Vise 70% de buissons (70% du 20% de 200).
-# Marge de 0.15, même logique que pour les herbes
-# Proportion de buissons domine la végétation.
+## Cond3: Proportion des buissons (Shrub1 et 2) parmi la végétation.
+## Vise 70% de buissons (70% du 20% de 200).
+## Marge de 0.15, même logique que pour les herbes
+## Proportion de buissons domine la végétation.
 
     condition3 = abs(shrubs / vegetation - 0.7) <= 0.15
 
-# Diversité minimale entre les deux types de buissons
-# Le buisson le moins abondant doit représenter au moins 30% du total des buissons.
-# Ne peut pas tolérer de marges, on applique exactement le seuil demandé.
+## Cond4: Diversité minimale entre les deux types de buissons
+## Le buisson le moins abondant doit représenter au moins 30% du total des buissons.
+## Ne peut pas tolérer de marges, on applique exactement le seuil demandé.
 
     condition4 = min(Shrub1, Shrub2) >= 0.30 * shrubs
 
     return condition1 && condition2 && condition3 && condition4
 end
 
-## #Simulations
+# ## Simulations
 
-#Nombre de simulations à effectuer
+# Nombre de simulations à effectuer
 nombre_simulations = 100
 
-#Compteur des simulations qui respectent les critères
+# Compteur des simulations qui respectent les critères
 nombre_reussites = 0
 
 for i in 1:nombre_simulations
@@ -185,7 +187,7 @@ end
 pourcentage = (nombre_reussites / nombre_simulations) * 100
 println("Pourcentage de réussite: ", pourcentage, "%")
 
-## # Graphique
+# ## Graphique
 f = Figure()
 ax = Axis(f[1, 1], xlabel="Nb. générations", ylabel="Nb. parcelles")
 
