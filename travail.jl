@@ -108,7 +108,7 @@ end
 # Barren, Grass, Shrub1, Shrub2
 
 # Population initiale
-s = [160, 12, 14, 14] ## 200 parcelles et 50 plantées, pas d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met les herbes on risque d'en avoir trop à l'équilibre
+s = [160, 12, 14, 14] ## 200 parcelles et 50 plantées, peu d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met plus d'herbes on risque d'en avoir trop à l'équilibre.
 states = length(s)
 patches = sum(s)
 
