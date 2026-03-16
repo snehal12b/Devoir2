@@ -168,13 +168,28 @@ function foo(x, y)
 end
 
 # # Présentation des résultats
+# Les résultats de la simulation montrent l'évolution du nombre de parcelles dans chacun des quatres états de # végétations (Barren, Grass, Scrhub 1 et Schrub 2)   
+# au cours de 200 générations. Les lignes pales représentent les simulations stochastiques, et les lignes épaisses représentent la simulation déterministe.
+# Au début de la simulation, la majorité des parcelles sont barren (environ 160 parcelles), alors que les parcelles végétalisées représentent environ 40 parcelles. 
+# Au cours du temps, le nombre de parcellesdans chaque état évolue progressivement vers un équilibre relativement stable. Les résultats montrent que les parcelles 
+# barren restent dominantes dans le corridor au cours du temps en représentant la majorité des parcelles. Les auters états sont présents mais en plus fabile proportion 
+# Les simulations stochastiques varient mais la tendence générale reste similaire entre les simulations. La plupart convergent vers des valeurs proche de celles de la 
+# simulation déterministe.  
+
 
 # La figure suivante représente des valeurs aléatoires:
 
 hist(randn(100))
 
 # # Discussion
-
+# Les résultats des simulations montrent que le système converge vers un éequilibre stable après plusieurs générations. La majorités des parcelles restent Barren tandis
+# que le reste est occupé en par de la végétation. A l'équilibre, le nombre de parcelles végétaliséees est autour de 40 parcelles, ce qui correspsond à environ 20 % des 200 
+# parcelles. Cela indique que la matrice de transition choisie permet globalement de maintenir la proporiton de végétation souhaitée. La répartition des herbes et buisssons 
+# aussi être relativement stalbe au cours des simulation. Les herbes colonisent certaines parcelles nues et les buissons ont une proabilité de persistance plus élevée. De plus,
+# les deux types de buissons restent présents dans des proportions relativement simulaire dans la plupart des simulations, ce qui permet de maintenir une diversitée minimale 
+# entre les deux espèces de buissons, ce qui était dans le mandat. Les simulations stochastiques ont cepedant une variabilité entre elles. Puisque le modèle est aléatoire,
+# certaines simulations ne respecent pas toujours les critères définis. Il peut arriver que la proportion d'herbes soit legèrement trop élevé ou que la diversité entre les 
+# deux types de buissons ne soit pas respecté.  
 
 
 # On peut aussi citer des références dans le document `references.bib`,
