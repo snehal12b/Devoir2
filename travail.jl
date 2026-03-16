@@ -14,7 +14,7 @@
 
 # # Introduction
 
-# La gestion de la végétation sous les lignes électriques à haute tension est considéré comme un défi important.
+# La gestion de la végétation sous les lignes électriques à haute tension est considérée comme un défi important.
 # Il faut assurer la sécurité des infrastructures et préserver aussi la biodiversité. 
 # Une végétation trop dense ou composée d'arbre de grande taille peut interférer avec les lignes électriques, tandis qu'une
 # absence complète de végétation peut diminuer la diversité biologique et ainsi favoriser l'érosion des sols.
@@ -29,45 +29,49 @@
 
 # # Présentation du modèle
 
-# Le corridor étudié est représenté comme un ensemble de 200 parcelles qui peuvent se trouver dans différents états de végétation. Quatre états sont considérés : Barren (sol nu), Grass (herbes), Shrub1 (buisson 1) et Shrub2 (buisson 2).
-# Les parcelles évoluent d'un état à l'autre au fil du temps selon une matrice de transition qui décrit les probabilités de colonisation, persistance ou de remplacement entre les différents types de végétation.
-# Le modèle est un modèle de transition markovien où l'état d'une parcelle à la génération suivante dépend juste de son état actuel et des probabilités associées dans la matrice de transition. 
-# Les transitions permettent la colonisation des parcelles nues par des herbes (Grass) ou des buissons (Shrub1 et 2), la persistance des végétaux, et les conversions entre les différents types de végétation.
-# Ainsi, pour simuler l'aménagement du corridor sous une ligne électique, une population initiale comportement principalement des parcelles nues est utilisée, avec une plantation maximale de 50 parcelles sous forme de buissons.
-# Les herbes ne sont pas plantées initialement, car elles devraient coloniser naturellement les parcelles libres. Donc, l'objectif du modèle est d'évaluer si, à long terme, le système atteint un équilibre respectant les critères qui sont :
-# 20% de parcelles végétalisées, dont 30% d'herbes et 70% de buissons, et garder une diversité minimale entre les deux espèces de buissons.
+# Le corridor étudié est représenté comme un ensemble de 200 parcelles qui peuvent se trouver dans différents états de végétation: Barren (sol nu), Grass (herbes), Shrub1 (buisson 1) et Shrub2 (buisson 2).
+# Les parcelles évoluent d'un état à l'autre au fil du temps selon une matrice de transition, qui décrit les probabilités de colonisation, de persistance ou de remplacement entre les différents types de végétation.
+# Le modèle utilisé est un modèle de transition markovien où l'état futur d'une parcelle dépend juste de son état actuel et des probabilités indiquées dans la matrice de transition. 
+# Les transitions permettent la colonisation des parcelles nues par des herbes (Grass) ou des buissons (Shrub1 et 2), la persistance des végétaux déjà présents, et la conversion entre les différents types de végétation.
+# Pour la simulation, la population initiale est composée principalement de parcelles nues (Barren), avec une petite proportion de parcelles végétalisées pour guider la succession écologique vers l'équilibre souhaité.
+# En effet, pour simuler l'évolution de la végétation dans le corridor en accord avec les objectifs du mandat,nous avons choisi une population initiale composée de 160 parcelles nues (Barren), 12 parcelles d'herbes (Grass), et 14 parcelles pour chacun des deux types de buissons (Shrub1 et Shrub2).
+# Donc, l'objectif du modèle est d'évaluer si, à long terme, le système atteint un équilibre respectant les critères définis dans le mandat qui sont: 20% de parcelles végétalisées, dont 30% d'herbes et 70% de buissons, tout en maintenant une diversité minimale entre les deux espèces de buissons.
 
 # # Implémentation
 
-# Le modèle à été créer dans le langage Julia afin de simuler l'évolution de la végétation dans un corridor composé de 200 parcelles. Les états que peuvent prendre 
-# les parcelles sont les suivant Barren (sol nu), Grass (herbes), Shrub1 (buisson 1) et Shrub2 (buisson 2). 
-# Une matrice de transition a été créer poour décrire les probabilités de changement d'états d'une génération à l'autre. Une fonction d'abord vérifie que la matrice 
-# de transition est valide en s'assurant que la somme des probabilités de chaque ligne est égale à 1. Sinon, les valeurs sont normalisées. 
-# La populaiton initiale est définie par un vecteur contenant le nombre de parcelle dans chaque état. Elle est composée de 160 parcelles nues, 12 parcelles d'herbes, 
-# et 14 parcelles pour chacun des deux types de buissons. La quantité d'herbe est volontairement faible pour éviter d'avoir un domiance trop importante d'herbe puisqu'on
+# Le modèle a été créé en Julia afin de simuler l'évolution de la végétation dans un corridor composé de 200 parcelles. Les états que peuvent prendre 
+# les parcelles sont les suivants: Barren (sol nu), Grass (herbes), Shrub1 (buisson 1) et Shrub2 (buisson 2). 
+# Une matrice de transition a été créé pour décrire les probabilités de changement d'état d'une génération à l'autre. Une fonction d'abord vérifie que chaque ligne de la matrice 
+# de transition est valide en s'assurant que la somme des probabilités de chaque ligne est égale à 1. Sinon, les valeurs sont automatiquement normalisées. 
+# La population initiale est définie par un vecteur indiquant le nombre de parcelles dans chaque état. Elle est composée de 160 parcelles nues, 12 parcelles d'herbes, 
+# et 14 parcelles pour chacun des deux types de buissons. La quantité d'herbe est volontairement faible pour éviter d'avoir une dominance trop importante d'herbes puisqu'on
 # souhaite obtenir 70% de buissons dans la végétation.
-# Il y a deux types de simulations, la simulation détéerminsite et la simulation stochastique. La simulation déterministe répresente la tendance moyenne du système 
-# alors que la simulation stochastique permet de représenter la variabilité naturelle du système
-# Les simulations sont réalisées sur 200 générations. Pour vérifier si les conditions du mandat sont respectées, la simulation stochastique a été répétée 100 fois.
-# Après chaque simulation, une fonction vérifie si quatre conditions sont respectées. La première est que le nombre total de parcelle végétalisées doit être environ 
-# 40 parcelles avec une tolérance de  + ou - 8 parcelles. La deuxième est que les herbes doivent représenter environ 30 % de la population. La quatrièreme est que 
+# Il y a deux types de simulations, la simulation déterministe et la simulation stochastique. La simulation déterministe répresente la tendance moyenne du système 
+# alors que la simulation stochastique permet de représenter la variabilité naturelle du système.
+# Les simulations sont réalisées sur 200 générations. Pour la simulation stochastique, 100 répétitions sont réalisées pour vérifier la fiabilité des résultats et donc pour vérifier si les conditions du mandat sont respectées.
+# Après chaque simulation, une fonction vérifie si quatre conditions sont respectées. La première est que le nombre total de parcelle végétalisées doit être d'environ 
+# 40 parcelles. La deuxième est que les herbes doivent représenter environ 30 % de la végétation. La troisième est que 
 # les buissons doivent représenter environ 70% de la végétation. La quatrième est que le type de buisson le moins abondant doit représenter au moins 30% des parcelles
-# occupées par des buissons. Si les quatres conditions sont respectées alors la simulaiton est réussite. 
-# Le pourcentage de simulations qui respecte ces conditions est ensuite calculé pour voir si le modèle atteint l'objectif de 80 % de réussite.
-# Finalement, un graphique est créer afin de visualiser l'évolution du nombre de parcelles au cours du temps. Les lignes pales representent les simulation stochastique
+# occupées par des buissons. Si les quatre conditions sont respectées alors la simulation est réussie. 
+# Le pourcentage de simulations qui respectent ces conditions est ensuite calculé pour voir si le modèle atteint l'objectif de 80% de réussite.
+# Finalement, un graphique est créer afin de visualiser l'évolution du nombre de parcelles au cours du temps. Les lignes pâles représentent les simulations stochastiques
 # et les lignes épaisses représentent la simulation déterministe. 
 
 # ## Packages nécessaires
 
 import Pkg
 Pkg.add("Distributions")
-import Random
-Random.seed!(123456)
+Pkg.add("CairoMakie")
+
 using CairoMakie
 using Distributions
+
+import Random
+Random.seed!(123456)
 # ## Code à modifier
 
-## Vérifie que la matrice de transition est valide
+## Vérifie que chaque ligne de la matrice de transition est valide.
+## Si une ligne n'est pas valide, elle est normalisée pour que la somme soit égale à 1. Un avertissement est alors affiché pour indiquer que la ligne a été modifiée.
 
 function check_transition_matrix!(T)
     for ligne in axes(T, 1)
@@ -79,7 +83,8 @@ function check_transition_matrix!(T)
     return T
 end
 
-## Vérifie que les dimensions de la matrice et du vecteur états sont correctes
+## Vérifie que les dimensions de la matrice et du vecteur états sont correctes.
+## La matrice de transition doit être carrée et le nombre d'états doit correspondre à la taille de la matrice. Si ce n'est pas le cas, une erreur est levée.
 
 function check_function_arguments(transitions, states)
     if size(transitions, 1) != size(transitions, 2)
@@ -93,6 +98,7 @@ function check_function_arguments(transitions, states)
 end
 
 # Simulation stochastique
+
 function _sim_stochastic!(timeseries, transitions, generation)
     for state in axes(timeseries, 1)
         pop_change = rand(Multinomial(timeseries[state, generation], transitions[state, :]))
@@ -101,12 +107,14 @@ function _sim_stochastic!(timeseries, transitions, generation)
 end
 
 # Simulation déterministe
+
 function _sim_determ!(timeseries, transitions, generation)
     pop_change = (timeseries[:, generation]' * transitions)'
     timeseries[:, generation+1] .= pop_change
 end
 
 # Fonction principale de la simulation
+
 function simulation(transitions, states; generations=500, stochastic=false)
 
     check_transition_matrix!(transitions)
@@ -125,12 +133,12 @@ function simulation(transitions, states; generations=500, stochastic=false)
     return timeseries
 end
 
-# ## États et population initiale
+# ## États, population initiale et matrice
 # States
 # Barren, Grass, Shrub1, Shrub2
 
 # Population initiale
-s = [160, 12, 14, 14] # 200 parcelles et 50 plantées, peu d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met plus d'herbes on risque d'en avoir trop à l'équilibre.
+s = [160, 12, 14, 14] # 200 parcelles et 40 plantées, peu d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met plus d'herbes on risque d'en avoir trop à l'équilibre.
 states = length(s)
 patches = sum(s)
 
@@ -148,15 +156,15 @@ states_colors = [:grey40, :orange, :teal, :purple]
 # ## Vérification des critères
 
 function verification_equilibre(resultat)
-    final = resultat[:, end]
-    Grass = final[2]
-    Shrub1 = final[3]
-    Shrub2 = final[4]
+    final = resultat[:, end] # Sélectionne la dernière colonne du résultat, qui correspond à l'état final après les générations simulées.
+    Grass = final[2] # Récupère le nombre de parcelles d'herbes (Grass) à l'équilibre.
+    Shrub1 = final[3] # Récupère le nombre de parcelles de buisson 1 (Shrub1) à l'équilibre.
+    Shrub2 = final[4] # Récupère le nombre de parcelles de buisson 2 (Shrub2) à l'équilibre.
 
-    vegetation = Grass + Shrub1 + Shrub2
-    shrubs = Shrub1 + Shrub2
+    vegetation = Grass + Shrub1 + Shrub2 # Total de parcelles végétalisées à l'équilibre
+    shrubs = Shrub1 + Shrub2 # Total de parcelles de buissons.
 
-    if vegetation == 0
+    if vegetation == 0 #Vérification du cas où il n'y a aucune parcelle végétalisée.
         return false
     end
 
@@ -185,7 +193,7 @@ end
 
 ## Cond4: Diversité minimale entre les deux types de buissons
 ## Le buisson le moins abondant doit représenter au moins 30% du total des buissons.
-## Ne peut pas tolérer de marges, on applique exactement le seuil demandé.
+## Ne peut pas tolérer de marges, on applique exactement le seuil demandé pour garantir la diversité.
    
 # ## Simulations
 
@@ -193,12 +201,12 @@ end
 nombre_simulations = 100
 
 # Compteur des simulations qui respectent les critères
-nombre_reussites = 0
+nombre_reussites = 0 # Valeur initial de 0, elle augmentera à chaque fois qu'une simulation respecte les critères définis dans la fonction verification_equilibre.
 
 for i in 1:nombre_simulations
     resultat = simulation(T, s; stochastic=true, generations=200)
     if verification_equilibre(resultat)
-        global nombre_reussites += 1
+        global nombre_reussites += 1 # Si la simulation respecte les critères, on ajoute au compteur de réussites. global est utilisé pour indiquer que nous faisons référence à la variable nombre_reussites définie avant la boucle.
     end
 end
 
@@ -206,7 +214,8 @@ end
 pourcentage = (nombre_reussites / nombre_simulations) * 100
 println("Pourcentage de réussite: ", pourcentage, "%")
 
-# ## Graphique
+# ## Visualisation
+
 f = Figure()
 ax = Axis(f[1, 1], xlabel="Nb. générations", ylabel="Nb. parcelles")
 
@@ -230,28 +239,31 @@ current_figure()
 
 
 # # Présentation des résultats
-# Les résultats de la simulation montrent l'évolution du nombre de parcelles dans chacun des quatres états de # végétations (Barren, Grass, Scrhub 1 et Schrub 2)   
-# au cours de 200 générations. Les lignes pales représentent les simulations stochastiques, et les lignes épaisses représentent la simulation déterministe.
+
+# Les résultats de la simulation montrent l'évolution du nombre de parcelles dans chacun des quatres états de végétation (Barren, Grass, Scrhub 1 et Schrub 2)   
+# au cours de 200 générations. Les lignes pâles représentent les simulations stochastiques, et les lignes épaisses représentent la simulation déterministe.
 # Au début de la simulation, la majorité des parcelles sont barren (environ 160 parcelles), alors que les parcelles végétalisées représentent environ 40 parcelles. 
-# Au cours du temps, le nombre de parcellesdans chaque état évolue progressivement vers un équilibre relativement stable. Les résultats montrent que les parcelles 
-# barren restent dominantes dans le corridor au cours du temps en représentant la majorité des parcelles. Les auters états sont présents mais en plus fabile proportion 
-# Les simulations stochastiques varient mais la tendence générale reste similaire entre les simulations. La plupart convergent vers des valeurs proche de celles de la 
-# simulation déterministe.  
+# Au cours du temps, le nombre de parcelles dans chaque état évolue progressivement vers un équilibre relativement stable. Les résultats montrent que les parcelles 
+# Barren restent dominantes , tandis que les autres états occupent une proportion plus faible, mais constante. # Les simulations stochastiques varient mais la tendence 
+# générale reste similaire entre les simulations. La plupart convergent vers des valeurs proche de celles de la  simulation déterministe.
+# Avec un taux de réussite de 80% dans les simulations stochastiques, cela indique que le modèle atteint les objectifs définis par le mandat dans la majorité des cas. 
+# Ceci suggère que les paramètres choisis sont appropriés pour atteindre l'équilibre souhaité.
 
-
-# La figure suivante représente des valeurs aléatoires:
-
-hist(randn(100))
 
 # # Discussion
-# Les résultats des simulations montrent que le système converge vers un éequilibre stable après plusieurs générations. La majorités des parcelles restent Barren tandis
-# que le reste est occupé en par de la végétation. A l'équilibre, le nombre de parcelles végétaliséees est autour de 40 parcelles, ce qui correspsond à environ 20 % des 200 
-# parcelles. Cela indique que la matrice de transition choisie permet globalement de maintenir la proporiton de végétation souhaitée. La répartition des herbes et buisssons 
-# aussi être relativement stalbe au cours des simulation. Les herbes colonisent certaines parcelles nues et les buissons ont une proabilité de persistance plus élevée. De plus,
-# les deux types de buissons restent présents dans des proportions relativement simulaire dans la plupart des simulations, ce qui permet de maintenir une diversitée minimale 
-# entre les deux espèces de buissons, ce qui était dans le mandat. Les simulations stochastiques ont cepedant une variabilité entre elles. Puisque le modèle est aléatoire,
-# certaines simulations ne respecent pas toujours les critères définis. Il peut arriver que la proportion d'herbes soit legèrement trop élevé ou que la diversité entre les 
-# deux types de buissons ne soit pas respecté.  
+
+# Les résultats des simulations montrent que le système converge vers un équilibre stable après une phase initiale de transition et après plusieurs générations. La majorités des parcelles restent Barren, tandis
+# que le reste du corridor est occupé par de la végétation. A l'équilibre, le nombre de parcelles végétalisées est autour de 40 parcelles, ce qui correspsond à environ 20 % des 200 parcelles.
+# Cela indique que la matrice de transition choisie permet globalement de maintenir la proporiton de végétation souhaitée. La répartition des herbes et buisssons demeure relativement stable
+# au cours des simulations. Les herbes colonisent activement certaines parcelles nues, tandis que les buissons ont une proabilité de persistance plus élevée.
+# De plus, les deux types de buissons restent présents dans des proportions relativement similaires dans la plupart des simulations, ce qui permet de maintenir la diversité minimale requise.
+# Cependant, la nature stochastique du modèle engendre une variabilité entre les simulations. Bien que le taux de réussite soit de 80%, certains scénarios ne respectent pas exactement les critères du mandat.
+# Ces échecs ont lieu principalement lorsque qu'il y a une dominance d'herbes (Grass) ou un manque d'équilibre entre les deux types de buissons (Shrub1 et Shrub2).
+# Par exemple, dans certaines simulations, les herbes peuvent coloniser plus rapidement que les buissons, ce qui peut entraîner une proportion d'herbes plus élevée que les 30% souhaités.
+# Les résultats, montrent la sensibilité du système. En effet, même si la matrice de transition est conçue pour favoriser un équilibre respectant les critères du mandat, la variabilité naturelle du système
+# peut mener à des résultats différents d'une simulation à l'autre.
+
+ 
 
 # On peut aussi citer des références dans le document `references.bib`,
 # @ermentrout1993cellular -- la bibliographie sera ajoutée automatiquement à la
