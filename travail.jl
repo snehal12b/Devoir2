@@ -218,7 +218,7 @@ hist(randn(100))
 
 # # Discussion
 
-
+#Ll
 
 # On peut aussi citer des références dans le document `references.bib`,
 # @ermentrout1993cellular -- la bibliographie sera ajoutée automatiquement à la
