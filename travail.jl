@@ -59,10 +59,10 @@
 
 # ## Packages nécessaires
 
-import Random
-Random.seed!(123456)
 import Pkg
 Pkg.add("Distributions")
+import Random
+Random.seed!(123456)
 using CairoMakie
 using Distributions
 # ## Code à modifier
@@ -198,7 +198,7 @@ nombre_reussites = 0
 for i in 1:nombre_simulations
     resultat = simulation(T, s; stochastic=true, generations=200)
     if verification_equilibre(resultat)
-        nombre_reussites += 1
+        global nombre_reussites += 1
     end
 end
 
