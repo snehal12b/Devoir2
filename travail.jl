@@ -185,7 +185,7 @@ function verification_equilibre(resultat)
     return condition1 && condition2 && condition3 && condition4
 end
 
-# ## Simulations
+# ## Simulationss
 
 # Nombre de simulations à effectuer
 nombre_simulations = 100
@@ -225,17 +225,7 @@ end
 axislegend(ax)
 tightlimits!(ax)
 current_figure()
-# ## Une autre section
 
-"""
-    foo(x, y)
-
-Cette fonction ne fait rien.
-"""
-function foo(x, y)
-    ## Cette ligne est un commentaire
-    return nothing
-end
 
 # # Présentation des résultats
 # Les résultats de la simulation montrent l'évolution du nombre de parcelles dans chacun des quatres états de # végétations (Barren, Grass, Scrhub 1 et Schrub 2)   
@@ -260,7 +250,6 @@ hist(randn(100))
 # entre les deux espèces de buissons, ce qui était dans le mandat. Les simulations stochastiques ont cepedant une variabilité entre elles. Puisque le modèle est aléatoire,
 # certaines simulations ne respecent pas toujours les critères définis. Il peut arriver que la proportion d'herbes soit legèrement trop élevé ou que la diversité entre les 
 # deux types de buissons ne soit pas respecté.  
-
 
 # On peut aussi citer des références dans le document `references.bib`,
 # @ermentrout1993cellular -- la bibliographie sera ajoutée automatiquement à la
