@@ -243,7 +243,7 @@ current_figure()
 # au cours de 200 générations. Les lignes pâles représentent les simulations stochastiques, et les lignes épaisses représentent la simulation déterministe. Un modèle déterministe 
 # impose une règle fixe reliant entrées et sorties de façon prévisible. Les résultats seront toujours les mêmes pour un état intial donné. Au contraire, un  modèle stochastique 
 # introduit des éléments aléatoires dans le système, ce qui permet, en programmation de simulations, de représenter des variations d’un phénomène de manière plus naturelle 
-# en produisant différents résultats à chaque exécution, avec les mêmes paramètres de départ (husson2001modele).
+# en produisant différents résultats à chaque exécution, avec les mêmes paramètres de départ (Husson,2001).
 # Au début de la simulation, la majorité des parcelles sont barren (environ 160 parcelles), alors que les parcelles végétalisées représentent environ 40 parcelles. 
 # Au cours du temps, le nombre de parcelles dans chaque état évolue progressivement vers un équilibre stable. Les résultats montrent que les parcelles 
 # Barren restent dominantes, tandis que les autres états occupent une proportion plus faible, mais constante. Les simulations stochastiques varient mais la tendence 
@@ -271,3 +271,4 @@ current_figure()
 # Ce modèle permet donc de combiner la prédicitibilité (déterminisme) et réalisme écologique (stochastique) dans la modélisation de la végétation sous lignes à haute tension.
 
  # # Bibliographie
+# Husson, F. (2001). Construire un modèle stochastique à partir d'un modèle déterministe. Revue de Statistique Appliquée, 49(4), 5-27. https://www.numdam.org/item/RSA_2001__49_4_5_0/
