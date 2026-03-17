@@ -137,7 +137,7 @@ end
 # Barren, Grass, Shrub1, Shrub2
 
 # Population initiale
-s = [160, 12, 14, 14] # 200 parcelles et 40 plantées, peu d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation, donc si on met plus d'herbes on risque d'en avoir trop à l'équilibre.
+s = [160, 12, 14, 14] # 200 parcelles et 40 plantées, peu d'herbes initialement parce que l'objectif final est 70% de buissons parmi la végétation.
 states = length(s)
 patches = sum(s)
 
@@ -172,7 +172,7 @@ function verification_equilibre(resultat)
     condition3 = abs(shrubs / vegetation - 0.7) <= 0.15
     condition4 = min(Shrub1, Shrub2) >= 0.30 * shrubs
 
-    return condition1 && condition2 && condition3 && condition4 # On utilise &&, car && n'évalue pas les conditions suivantes si une condition est fausse, ce qui est plus efficace que & qui évalue toutes les conditions même si une est fausse.
+    return condition1 && condition2 && condition3 && condition4 # On utilise &&, car && n'évalue pas les conditions suivantes si une condition est fausse.
 end
 
 ## Cond1: Nombre total de parcelles végétalisées
@@ -205,7 +205,8 @@ nombre_reussites = 0 # Valeur initial de 0, elle augmentera à chaque fois qu'un
 for i in 1:nombre_simulations
     resultat = simulation(T, s; stochastic=true, generations=200)
     if verification_equilibre(resultat)
-        global nombre_reussites += 1 # Si la simulation respecte les critères, on ajoute un au compteur de réussites. global est utilisé pour indiquer que nous faisons référence à la variable nombre_reussites définie avant la boucle.
+        global nombre_reussites += 1 # Si la simulation respecte les critères, on ajoute un au compteur de réussites. global est utilisé pour indiquer que nous faisons
+                                     ## référence à la variable nombre_reussites définie avant la boucle.
     end
 end
 
